@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campus AI - Assistant</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#07111f;
+    color:white;
+    height:100vh;
+    overflow:hidden;
+}
+
+.header{
+    height:70px;
+    background:#0c192b;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 28px;
+}
+
+.logo-area{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo{
+    width:45px;
+    height:45px;
+    object-fit:contain;
+    background:white;
+    border-radius:9px;
+    padding:4px;
+}
+
+.brand{
+    font-size:21px;
+    font-weight:800;
+}
+
+.brand span{
+    color:#4da3ff;
+}
+
+.back{
+    background:#17283e;
+    color:white;
+    border:1px solid rgba(255,255,255,.1);
+    padding:9px 16px;
+    border-radius:9px;
+    cursor:pointer;
+}
+
+.back:hover{
+    background:#223b59;
+}
+
+.layout{
+    height:calc(100vh - 70px);
+    display:flex;
+}
+
+.sidebar{
+    width:250px;
+    background:#091626;
+    border-right:1px solid rgba(255,255,255,.07);
+    padding:22px 15px;
+}
+
+.sidebar h3{
+    color:#8296ad;
+    font-size:12px;
+    letter-spacing:1px;
+    margin:10px 12px 15px;
+}
+
+.side-btn{
+    width:100%;
+    padding:13px 15px;
+    background:transparent;
+    color:#d9e5f2;
+    border:0;
+    text-align:left;
+    border-radius:10px;
+    cursor:pointer;
+    margin-bottom:5px;
+    font-size:14px;
+}
+
+.side-btn:hover,
+.side-btn.active{
+    background:#122840;
+    color:#62adff;
+}
+
+.chat{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+}
+
+.chat-top{
+    padding:25px 30px 10px;
+}
+
+.chat-top h1{
+    font-size:28px;
+}
+
+.chat-top p{
+    color:#8296ad;
+    margin-top:6px;
+    font-size:14px;
+}
+
+.messages{
+    flex:1;
+    overflow-y:auto;
+    padding:20px 8%;
+}
+
+.welcome{
+    text-align:center;
+    margin-top:8vh;
+}
+
+.welcome .ai-icon{
+    width:65px;
+    height:65px;
+    border-radius:20px;
+    margin:auto;
+    background:linear-gradient(135deg,#287bd9,#704de8);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:32px;
+    margin-bottom:20px;
+}
+
+.welcome h2{
+    font-size:25px;
+}
+
+.welcome p{
+    color:#8296ad;
+    margin-top:8px;
+}
+
+.suggestions{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:25px;
+}
+
+.suggestion{
+    background:#102238;
+    border:1px solid rgba(255,255,255,.08);
+    color:#c7d7e8;
+    padding:11px 15px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.suggestion:hover{
+    border-color:#438ee8;
+}
+
+.message{
+    display:flex;
+    margin:18px 0;
+    gap:12px;
+}
+
+.message.user{
+    justify-content:flex-end;
+}
+
+.bubble{
+    max-width:75%;
+    padding:13px 16px;
+    border-radius:15px;
+    line-height:1.5;
+    font-size:14px;
+}
+
+.ai .bubble{
+    background:#112238;
+    color:#dbe8f5;
+    border-bottom-left-radius:4px;
+}
+
+.user .bubble{
+    background:#287bd9;
+    color:white;
+    border-bottom-right-radius:4px;
+}
+
+.input-area{
+    padding:15px 8% 22px;
+    background:linear-gradient(transparent,#07111f 25%);
+}
+
+.input-box{
+    max-width:900px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    background:#102238;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:15px;
+    padding:7px;
+}
+
+.input-box:focus-within{
+    border-color:#438ee8;
+}
+
+textarea{
+    flex:1;
+    resize:none;
+    height:45px;
+    background:transparent;
+    border:0;
+    outline:none;
+    color:white;
+    padding:13px;
+    font-size:14px;
+}
+
+.send{
+    width:45px;
+    height:45px;
+    border:0;
+    border-radius:11px;
+    background:#287bd9;
+    color:white;
+    font-size:20px;
+    cursor:pointer;
+}
+
+.send:hover{
+    background:#3990ed;
+}
+
+.note{
+    text-align:center;
+    color:#53677d;
+    font-size:11px;
+    margin-top:8px;
+}
+
+@media(max-width:750px){
+
+    .sidebar{
+        display:none;
+    }
+
+    .header{
+        padding:0 15px;
+    }
+
+    .chat-top{
+        padding:20px 18px 5px;
+    }
+
+    .chat-top h1{
+        font-size:23px;
+    }
+
+    .messages{
+        padding:15px 18px;
+    }
+
+    .input-area{
+        padding:10px 15px 18px;
+    }
+
+    .bubble{
+        max-width:85%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="logo-area">
+        <img src="assets/alpha-logo.jpeg" class="logo">
+        <div class="brand">CAMPUS <span>AI</span></div>
+    </div>
+
+    <button class="back" onclick="location.href='dashboard.html'">
+        ← Dashboard
+    </button>
+
+</header>
+
+
+<div class="layout">
+
+    <aside class="sidebar">
+
+        <h3>AI TOOLS</h3>
+
+        <button class="side-btn active">
+            🤖 AI Assistant
+        </button>
+
+        <button class="side-btn" onclick="location.href='notes.html'">
+            📝 Smart Notes
+        </button>
+
+        <button class="side-btn" onclick="location.href='quiz.html'">
+            🧠 Quiz Creator
+        </button>
+
+        <h3>STUDENT</h3>
+
+        <button class="side-btn" onclick="location.href='calendar.html'">
+            📅 Calendar
+        </button>
+
+        <button class="side-btn" onclick="location.href='inbox.html'">
+            📥 Inbox
+        </button>
+
+    </aside>
+
+
+    <main class="chat">
+
+        <div class="chat-top">
+            <h1>AI Assistant 🤖</h1>
+            <p>Your personal study companion for Campus AI.</p>
+        </div>
+
+
+        <div class="messages" id="messages">
+
+            <div class="welcome" id="welcome">
+
+                <div class="ai-icon">🤖</div>
+
+                <h2>How can I help you?</h2>
+
+                <p>Ask me anything about your studies.</p>
+
+                <div class="suggestions">
+
+                    <button class="suggestion"
+                        onclick="askSuggestion('Explain Python variables')">
+                        Explain Python variables
+                    </button>
+
+                    <button class="suggestion"
+                        onclick="askSuggestion('Give me study tips')">
+                        Give me study tips
+                    </button>
+
+                    <button class="suggestion"
+                        onclick="askSuggestion('Create a quiz about computer science')">
+                        Create a quiz
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="input-area">
+
+            <div class="input-box">
+
+                <textarea
+                    id="prompt"
+                    placeholder="Ask Campus AI anything..."
+                    onkeydown="handleKey(event)"
+                ></textarea>
+
+                <button class="send" onclick="sendMessage()">
+                    ➤
+                </button>
+
+            </div>
+
+            <div class="note">
+                Campus AI can help with learning, notes and quizzes.
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+
+function addMessage(text,type){
+
+    const messages = document.getElementById("messages");
+
+    const welcome = document.getElementById("welcome");
+
+    if(welcome){
+        welcome.remove();
+    }
+
+    const message = document.createElement("div");
+
+    message.className = "message " + type;
+
+    const bubble = document.createElement("div");
+
+    bubble.className = "bubble";
+
+    bubble.textContent = text;
+
+    message.appendChild(bubble);
+
+    messages.appendChild(message);
+
+    messages.scrollTop = messages.scrollHeight;
+}
+
+
+function sendMessage(){
+
+    const input = document.getElementById("prompt");
+
+    const text = input.value.trim();
+
+    if(!text) return;
+
+    addMessage(text,"user");
+
+    input.value = "";
+
+    setTimeout(function(){
+
+        addMessage(
+            "I'm your Campus AI assistant. This chat interface is ready! To make me give real AI-generated answers, connect an AI API to this page.",
+            "ai"
+        );
+
+    },700);
+}
+
+
+function askSuggestion(text){
+
+    document.getElementById("prompt").value = text;
+
+    sendMessage();
+
+}
+
+
+function handleKey(event){
+
+    if(event.key === "Enter" && !event.shiftKey){
+
+        event.preventDefault();
+
+        sendMessage();
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
