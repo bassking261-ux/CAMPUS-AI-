@@ -196,6 +196,7 @@ body{
     border-radius:15px;
     line-height:1.5;
     font-size:14px;
+    white-space:pre-wrap;
 }
 
 .ai .bubble{
@@ -257,11 +258,20 @@ textarea{
     background:#3990ed;
 }
 
+.send:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+}
+
 .note{
     text-align:center;
     color:#53677d;
     font-size:11px;
     margin-top:8px;
+}
+
+.typing{
+    opacity:.7;
 }
 
 @media(max-width:750px){
@@ -302,7 +312,7 @@ textarea{
 <header class="header">
 
     <div class="logo-area">
-        <img src="assets/alpha-logo.jpeg" class="logo">
+        <img src="assets/alpha-logo.jpeg" class="logo" alt="Alpha College Logo">
         <div class="brand">CAMPUS <span>AI</span></div>
     </div>
 
@@ -311,7 +321,6 @@ textarea{
     </button>
 
 </header>
-
 
 <div class="layout">
 
@@ -343,14 +352,12 @@ textarea{
 
     </aside>
 
-
     <main class="chat">
 
         <div class="chat-top">
             <h1>AI Assistant 🤖</h1>
             <p>Your personal study companion for Campus AI.</p>
         </div>
-
 
         <div class="messages" id="messages">
 
@@ -385,7 +392,6 @@ textarea{
 
         </div>
 
-
         <div class="input-area">
 
             <div class="input-box">
@@ -396,7 +402,7 @@ textarea{
                     onkeydown="handleKey(event)"
                 ></textarea>
 
-                <button class="send" onclick="sendMessage()">
+                <button class="send" id="sendButton" onclick="sendMessage()">
                     ➤
                 </button>
 
@@ -412,10 +418,13 @@ textarea{
 
 </div>
 
-
 <script>
 
-function addMessage(text,type){
+const API_URL =
+"https://script.google.com/macros/s/AKfycbw2EF3UZ-dfD35BZqlD7TL3Xs6aHnxV0UMK7OrjCbZekBsbHTaZGjaRNJ1x4NWrWTplxA/exec";
+
+
+function addMessage(text, type){
 
     const messages = document.getElementById("messages");
 
@@ -440,29 +449,129 @@ function addMessage(text,type){
     messages.appendChild(message);
 
     messages.scrollTop = messages.scrollHeight;
+
 }
 
 
-function sendMessage(){
+function addTypingMessage(){
+
+    const messages = document.getElementById("messages");
+
+    const message = document.createElement("div");
+
+    message.className = "message ai";
+    message.id = "typingMessage";
+
+    const bubble = document.createElement("div");
+
+    bubble.className = "bubble typing";
+
+    bubble.textContent = "Thinking... 🤖";
+
+    message.appendChild(bubble);
+
+    messages.appendChild(message);
+
+    messages.scrollTop = messages.scrollHeight;
+
+}
+
+
+function removeTypingMessage(){
+
+    const typing = document.getElementById("typingMessage");
+
+    if(typing){
+        typing.remove();
+    }
+
+}
+
+
+async function sendMessage(){
 
     const input = document.getElementById("prompt");
+    const sendButton = document.getElementById("sendButton");
 
     const text = input.value.trim();
 
-    if(!text) return;
+    if(!text){
+        return;
+    }
 
-    addMessage(text,"user");
+    addMessage(text, "user");
 
     input.value = "";
 
-    setTimeout(function(){
+    sendButton.disabled = true;
+
+    addTypingMessage();
+
+    try{
+
+        const response = await fetch(API_URL, {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "text/plain;charset=utf-8"
+            },
+
+            body: JSON.stringify({
+                message: text
+            })
+
+        });
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "Server returned status " + response.status
+            );
+
+        }
+
+
+        const result = await response.json();
+
+        removeTypingMessage();
+
+
+        if(result.success){
+
+            addMessage(result.answer, "ai");
+
+        }else{
+
+            addMessage(
+                "Sorry machii 😕\n\n" +
+                (result.error || "Something went wrong."),
+                "ai"
+            );
+
+        }
+
+
+    }catch(error){
+
+        console.error("Campus AI Error:", error);
+
+        removeTypingMessage();
 
         addMessage(
-            "I'm your Campus AI assistant. This chat interface is ready! To make me give real AI-generated answers, connect an AI API to this page.",
+            "Connection error 😕\n\n" +
+            "Please check the Apps Script Web App deployment and try again.",
             "ai"
         );
 
-    },700);
+    }
+
+
+    sendButton.disabled = false;
+
+    input.focus();
+
 }
 
 
