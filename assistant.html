@@ -1,648 +1,719 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Campus AI - Assistant</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,sans-serif;
-}
+  <title>Campus AI - Assistant</title>
 
-body{
-    background:#07111f;
-    color:white;
-    height:100vh;
-    overflow:hidden;
-}
-
-.header{
-    height:70px;
-    background:#0c192b;
-    border-bottom:1px solid rgba(255,255,255,.08);
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 28px;
-}
-
-.logo-area{
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-
-.logo{
-    width:45px;
-    height:45px;
-    object-fit:contain;
-    background:white;
-    border-radius:9px;
-    padding:4px;
-}
-
-.brand{
-    font-size:21px;
-    font-weight:800;
-}
-
-.brand span{
-    color:#4da3ff;
-}
-
-.back{
-    background:#17283e;
-    color:white;
-    border:1px solid rgba(255,255,255,.1);
-    padding:9px 16px;
-    border-radius:9px;
-    cursor:pointer;
-}
-
-.back:hover{
-    background:#223b59;
-}
-
-.layout{
-    height:calc(100vh - 70px);
-    display:flex;
-}
-
-.sidebar{
-    width:250px;
-    background:#091626;
-    border-right:1px solid rgba(255,255,255,.07);
-    padding:22px 15px;
-}
-
-.sidebar h3{
-    color:#8296ad;
-    font-size:12px;
-    letter-spacing:1px;
-    margin:10px 12px 15px;
-}
-
-.side-btn{
-    width:100%;
-    padding:13px 15px;
-    background:transparent;
-    color:#d9e5f2;
-    border:0;
-    text-align:left;
-    border-radius:10px;
-    cursor:pointer;
-    margin-bottom:5px;
-    font-size:14px;
-}
-
-.side-btn:hover,
-.side-btn.active{
-    background:#122840;
-    color:#62adff;
-}
-
-.chat{
-    flex:1;
-    display:flex;
-    flex-direction:column;
-    position:relative;
-}
-
-.chat-top{
-    padding:25px 30px 10px;
-}
-
-.chat-top h1{
-    font-size:28px;
-}
-
-.chat-top p{
-    color:#8296ad;
-    margin-top:6px;
-    font-size:14px;
-}
-
-.messages{
-    flex:1;
-    overflow-y:auto;
-    padding:20px 8%;
-}
-
-.welcome{
-    text-align:center;
-    margin-top:8vh;
-}
-
-.welcome .ai-icon{
-    width:65px;
-    height:65px;
-    border-radius:20px;
-    margin:auto;
-    background:linear-gradient(135deg,#287bd9,#704de8);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:32px;
-    margin-bottom:20px;
-}
-
-.welcome h2{
-    font-size:25px;
-}
-
-.welcome p{
-    color:#8296ad;
-    margin-top:8px;
-}
-
-.suggestions{
-    display:flex;
-    justify-content:center;
-    flex-wrap:wrap;
-    gap:10px;
-    margin-top:25px;
-}
-
-.suggestion{
-    background:#102238;
-    border:1px solid rgba(255,255,255,.08);
-    color:#c7d7e8;
-    padding:11px 15px;
-    border-radius:10px;
-    cursor:pointer;
-}
-
-.suggestion:hover{
-    border-color:#438ee8;
-}
-
-.message{
-    display:flex;
-    margin:18px 0;
-    gap:12px;
-}
-
-.message.user{
-    justify-content:flex-end;
-}
-
-.bubble{
-    max-width:75%;
-    padding:13px 16px;
-    border-radius:15px;
-    line-height:1.5;
-    font-size:14px;
-    white-space:pre-wrap;
-}
-
-.ai .bubble{
-    background:#112238;
-    color:#dbe8f5;
-    border-bottom-left-radius:4px;
-}
-
-.user .bubble{
-    background:#287bd9;
-    color:white;
-    border-bottom-right-radius:4px;
-}
-
-.typing{
-    opacity:.7;
-}
-
-.input-area{
-    padding:15px 8% 22px;
-    background:linear-gradient(transparent,#07111f 25%);
-}
-
-.input-box{
-    max-width:900px;
-    margin:auto;
-    display:flex;
-    align-items:center;
-    background:#102238;
-    border:1px solid rgba(255,255,255,.1);
-    border-radius:15px;
-    padding:7px;
-}
-
-.input-box:focus-within{
-    border-color:#438ee8;
-}
-
-textarea{
-    flex:1;
-    resize:none;
-    height:45px;
-    background:transparent;
-    border:0;
-    outline:none;
-    color:white;
-    padding:13px;
-    font-size:14px;
-}
-
-.send{
-    width:45px;
-    height:45px;
-    border:0;
-    border-radius:11px;
-    background:#287bd9;
-    color:white;
-    font-size:20px;
-    cursor:pointer;
-}
-
-.send:hover{
-    background:#3990ed;
-}
-
-.send:disabled{
-    opacity:.5;
-    cursor:not-allowed;
-}
-
-.note{
-    text-align:center;
-    color:#53677d;
-    font-size:11px;
-    margin-top:8px;
-}
-
-@media(max-width:750px){
-
-    .sidebar{
-        display:none;
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
     }
 
-    .header{
-        padding:0 15px;
+    body {
+      background: #07111f;
+      color: white;
+      height: 100vh;
+      overflow: hidden;
     }
 
-    .chat-top{
-        padding:20px 18px 5px;
+    .app {
+      display: flex;
+      height: 100vh;
     }
 
-    .chat-top h1{
-        font-size:23px;
+    /* SIDEBAR */
+    .sidebar {
+      width: 250px;
+      background: #0b1728;
+      border-right: 1px solid #1d3047;
+      padding: 22px 15px;
+      display: flex;
+      flex-direction: column;
     }
 
-    .messages{
-        padding:15px 18px;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 35px;
     }
 
-    .input-area{
-        padding:10px 15px 18px;
+    .brand img {
+      width: 45px;
+      height: 45px;
+      object-fit: contain;
+      border-radius: 10px;
+      background: white;
     }
 
-    .bubble{
-        max-width:85%;
+    .brand h2 {
+      font-size: 19px;
     }
-}
-</style>
+
+    .brand span {
+      color: #6ea8ff;
+    }
+
+    .new-chat {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #2d4561;
+      border-radius: 10px;
+      background: #102238;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+      margin-bottom: 25px;
+    }
+
+    .new-chat:hover {
+      background: #17314f;
+    }
+
+    .menu-title {
+      color: #718096;
+      font-size: 12px;
+      margin: 10px 8px;
+      text-transform: uppercase;
+    }
+
+    .menu a {
+      display: block;
+      color: #d9e2ef;
+      text-decoration: none;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 5px;
+    }
+
+    .menu a:hover {
+      background: #142942;
+    }
+
+    .bottom {
+      margin-top: auto;
+    }
+
+    /* MAIN */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .topbar {
+      height: 70px;
+      border-bottom: 1px solid #1d3047;
+      display: flex;
+      align-items: center;
+      padding: 0 25px;
+      background: #091626;
+    }
+
+    .topbar h1 {
+      font-size: 20px;
+    }
+
+    .topbar p {
+      color: #8090a5;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    /* MESSAGES */
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 30px 20px 150px;
+    }
+
+    .welcome {
+      max-width: 750px;
+      margin: 50px auto;
+      text-align: center;
+    }
+
+    .welcome img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      background: white;
+      border-radius: 18px;
+      margin-bottom: 20px;
+    }
+
+    .welcome h2 {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .welcome p {
+      color: #91a0b4;
+      line-height: 1.6;
+    }
+
+    .suggestions {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 25px;
+    }
+
+    .suggestion {
+      background: #0d1d31;
+      border: 1px solid #20364f;
+      color: #dce7f5;
+      padding: 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .suggestion:hover {
+      background: #142b46;
+    }
+
+    .message {
+      max-width: 850px;
+      margin: 0 auto 22px;
+      display: flex;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 38px;
+      height: 38px;
+      min-width: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #17314f;
+      overflow: hidden;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: white;
+    }
+
+    .user-avatar {
+      background: #28558a;
+      font-size: 14px;
+    }
+
+    .bubble {
+      background: #0e2035;
+      border: 1px solid #1d344d;
+      padding: 13px 16px;
+      border-radius: 12px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-width: calc(100% - 50px);
+    }
+
+    .user .bubble {
+      background: #173c63;
+      border-color: #28567f;
+    }
+
+    .loading {
+      color: #91a0b4;
+      font-style: italic;
+    }
+
+    /* INPUT */
+    .input-area {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      left: 250px;
+      padding: 18px 25px 25px;
+      background: linear-gradient(
+        transparent,
+        #07111f 25%
+      );
+    }
+
+    .input-box {
+      max-width: 850px;
+      margin: auto;
+      background: #0d1d31;
+      border: 1px solid #2a425e;
+      border-radius: 15px;
+      display: flex;
+      align-items: flex-end;
+      padding: 10px;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.25);
+    }
+
+    textarea {
+      flex: 1;
+      resize: none;
+      min-height: 45px;
+      max-height: 140px;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: white;
+      padding: 12px;
+      font-size: 15px;
+    }
+
+    textarea::placeholder {
+      color: #667890;
+    }
+
+    .send {
+      width: 45px;
+      height: 45px;
+      border: none;
+      border-radius: 10px;
+      background: #2563a8;
+      color: white;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .send:hover {
+      background: #347ac1;
+    }
+
+    .send:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .footer-text {
+      max-width: 850px;
+      margin: 8px auto 0;
+      text-align: center;
+      font-size: 11px;
+      color: #53657b;
+    }
+
+    /* MOBILE */
+    @media (max-width: 700px) {
+      .sidebar {
+        display: none;
+      }
+
+      .topbar {
+        padding: 0 15px;
+      }
+
+      .input-area {
+        left: 0;
+        padding: 12px;
+      }
+
+      .messages {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .welcome {
+        margin: 30px auto;
+      }
+
+      .welcome h2 {
+        font-size: 24px;
+      }
+
+      .suggestions {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<header class="header">
+<div class="app">
 
-    <div class="logo-area">
-        <img src="assets/alpha-logo.jpeg"
-             class="logo"
-             alt="Alpha College Logo">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
 
-        <div class="brand">
-            CAMPUS <span>AI</span>
-        </div>
+    <div class="brand">
+      <img src="assets/alpha-logo.jpeg" alt="Alpha College">
+      <div>
+        <h2>Campus <span>AI</span></h2>
+      </div>
     </div>
 
-    <button class="back"
-            onclick="location.href='dashboard.html'">
-        ← Dashboard
+    <button class="new-chat" onclick="newChat()">
+      ＋ New Chat
     </button>
 
-</header>
+    <div class="menu-title">Campus</div>
 
-<div class="layout">
+    <div class="menu">
+      <a href="dashboard.html">🏠 Dashboard</a>
+      <a href="assistant.html">🤖 AI Assistant</a>
+      <a href="notes.html">📝 Notes</a>
+      <a href="quiz.html">🧠 Quiz</a>
+      <a href="calendar.html">📅 Calendar</a>
+      <a href="inbox.html">📥 Inbox</a>
+    </div>
 
-    <aside class="sidebar">
+    <div class="bottom">
+      <div class="menu">
+        <a href="settings.html">⚙️ Settings</a>
+      </div>
+    </div>
 
-        <h3>AI TOOLS</h3>
+  </aside>
 
-        <button class="side-btn active">
-            🤖 AI Assistant
-        </button>
 
-        <button class="side-btn"
-                onclick="location.href='notes.html'">
-            📝 Smart Notes
-        </button>
+  <!-- MAIN -->
+  <main class="main">
 
-        <button class="side-btn"
-                onclick="location.href='quiz.html'">
-            🧠 Quiz Creator
-        </button>
+    <header class="topbar">
+      <div>
+        <h1>AI Assistant</h1>
+        <p>Powered by Campus AI</p>
+      </div>
+    </header>
 
-        <h3>STUDENT</h3>
 
-        <button class="side-btn"
-                onclick="location.href='calendar.html'">
-            📅 Calendar
-        </button>
+    <!-- CHAT -->
+    <section class="messages" id="messages">
 
-        <button class="side-btn"
-                onclick="location.href='inbox.html'">
-            📥 Inbox
-        </button>
+      <div class="welcome" id="welcome">
 
-    </aside>
+        <img src="assets/alpha-logo.jpeg" alt="Alpha College">
 
-    <main class="chat">
+        <h2>How can I help you today?</h2>
 
-        <div class="chat-top">
-            <h1>AI Assistant 🤖</h1>
-            <p>Your personal study companion for Campus AI.</p>
-        </div>
+        <p>
+          I'm Campus AI, your smart student assistant.
+          Ask me about programming, studies, notes, quizzes,
+          assignments or any academic topic.
+        </p>
 
-        <div class="messages" id="messages">
+        <div class="suggestions">
 
-            <div class="welcome" id="welcome">
+          <button class="suggestion"
+            onclick="useSuggestion('Explain Python in simple words')">
+            🐍 Explain Python in simple words
+          </button>
 
-                <div class="ai-icon">
-                    🤖
-                </div>
+          <button class="suggestion"
+            onclick="useSuggestion('What is Artificial Intelligence?')">
+            🤖 What is Artificial Intelligence?
+          </button>
 
-                <h2>How can I help you?</h2>
+          <button class="suggestion"
+            onclick="useSuggestion('Create a short quiz about computer science')">
+            🧠 Create a CS quiz
+          </button>
 
-                <p>Ask me anything about your studies.</p>
-
-                <div class="suggestions">
-
-                    <button class="suggestion"
-                        onclick="askSuggestion('Explain Python variables')">
-                        Explain Python variables
-                    </button>
-
-                    <button class="suggestion"
-                        onclick="askSuggestion('Give me study tips')">
-                        Give me study tips
-                    </button>
-
-                    <button class="suggestion"
-                        onclick="askSuggestion('Create a quiz about computer science')">
-                        Create a quiz
-                    </button>
-
-                </div>
-
-            </div>
+          <button class="suggestion"
+            onclick="useSuggestion('Give me study tips for my exams')">
+            📚 Give me study tips
+          </button>
 
         </div>
 
-        <div class="input-area">
+      </div>
 
-            <div class="input-box">
+    </section>
 
-                <textarea
-                    id="prompt"
-                    placeholder="Ask Campus AI anything..."
-                    onkeydown="handleKey(event)"
-                ></textarea>
 
-                <button
-                    class="send"
-                    id="sendButton"
-                    onclick="sendMessage()">
-                    ➤
-                </button>
+    <!-- INPUT -->
+    <div class="input-area">
 
-            </div>
+      <div class="input-box">
 
-            <div class="note">
-                Campus AI can help with learning, notes and quizzes.
-            </div>
+        <textarea
+          id="prompt"
+          placeholder="Message Campus AI..."
+          rows="1"
+          onkeydown="handleKey(event)"
+        ></textarea>
 
-        </div>
+        <button
+          class="send"
+          id="sendBtn"
+          onclick="sendMessage()"
+        >
+          ➤
+        </button>
 
-    </main>
+      </div>
+
+      <div class="footer-text">
+        Campus AI • Alpha Arts and Science College
+      </div>
+
+    </div>
+
+  </main>
 
 </div>
 
+
 <script>
 
-/* YOUR NEW APPS SCRIPT WEB APP */
-const API_URL =
-"https://script.google.com/macros/s/AKfycbygXZqnFGPIUS-wDRXvvqPlickTi494H1rjv3bvl3D-36xkXTsoCrVUEYlbEsbw13TQoQ/exec";
+  /*
+    IMPORTANT:
+    This is your Google Apps Script Web App URL.
+  */
+
+  const API_URL =
+    "https://script.google.com/macros/s/AKfycby4fs6Y4Xnd0KpNTGsKLeGu7t7LN6e77NLIfqOeI9mL8TeIk26zZ1qkqJiz2Y-GTJu5Ww/exec";
 
 
-function addMessage(text, type){
+  const messages = document.getElementById("messages");
+  const promptBox = document.getElementById("prompt");
+  const sendBtn = document.getElementById("sendBtn");
 
-    const messages =
-        document.getElementById("messages");
 
-    const welcome =
-        document.getElementById("welcome");
+  // Enter key
+  function handleKey(event) {
 
-    if(welcome){
-        welcome.remove();
+    if (event.key === "Enter" && !event.shiftKey) {
+
+      event.preventDefault();
+
+      sendMessage();
     }
+  }
 
-    const message =
-        document.createElement("div");
 
-    message.className =
-        "message " + type;
+  // Suggestion buttons
+  function useSuggestion(text) {
 
-    const bubble =
-        document.createElement("div");
-
-    bubble.className =
-        "bubble";
-
-    bubble.textContent =
-        text;
-
-    message.appendChild(bubble);
-
-    messages.appendChild(message);
-
-    messages.scrollTop =
-        messages.scrollHeight;
-}
-
-
-function addTypingMessage(){
-
-    const messages =
-        document.getElementById("messages");
-
-    const message =
-        document.createElement("div");
-
-    message.className =
-        "message ai";
-
-    message.id =
-        "typingMessage";
-
-    const bubble =
-        document.createElement("div");
-
-    bubble.className =
-        "bubble typing";
-
-    bubble.textContent =
-        "Thinking... 🤖";
-
-    message.appendChild(bubble);
-
-    messages.appendChild(message);
-
-    messages.scrollTop =
-        messages.scrollHeight;
-}
-
-
-function removeTypingMessage(){
-
-    const typing =
-        document.getElementById("typingMessage");
-
-    if(typing){
-        typing.remove();
-    }
-}
-
-
-async function sendMessage(){
-
-    const input =
-        document.getElementById("prompt");
-
-    const sendButton =
-        document.getElementById("sendButton");
-
-    const text =
-        input.value.trim();
-
-    if(!text){
-        return;
-    }
-
-    addMessage(text, "user");
-
-    input.value = "";
-
-    sendButton.disabled = true;
-
-    addTypingMessage();
-
-    try{
-
-        const response =
-            await fetch(API_URL, {
-
-                method:"POST",
-
-                headers:{
-                    "Content-Type":
-                        "text/plain;charset=utf-8"
-                },
-
-                body:JSON.stringify({
-                    message:text
-                })
-
-            });
-
-
-        if(!response.ok){
-
-            throw new Error(
-                "Server error: " +
-                response.status
-            );
-
-        }
-
-
-        const result =
-            await response.json();
-
-        removeTypingMessage();
-
-
-        if(result.success){
-
-            addMessage(
-                result.answer,
-                "ai"
-            );
-
-        }else{
-
-            addMessage(
-                "Sorry machii 😕\n\n" +
-                (result.error ||
-                "Something went wrong."),
-                "ai"
-            );
-
-        }
-
-
-    }catch(error){
-
-        console.error(
-            "Campus AI Error:",
-            error
-        );
-
-        removeTypingMessage();
-
-        addMessage(
-            "Connection error 😕\n\n" +
-            "Please check the Apps Script backend.",
-            "ai"
-        );
-
-    }
-
-
-    sendButton.disabled = false;
-
-    input.focus();
-}
-
-
-function askSuggestion(text){
-
-    document.getElementById("prompt").value =
-        text;
+    promptBox.value = text;
 
     sendMessage();
-}
+  }
 
 
-function handleKey(event){
+  // Add message to chat
+  function addMessage(text, type) {
 
-    if(
-        event.key === "Enter" &&
-        !event.shiftKey
-    ){
+    const message = document.createElement("div");
 
-        event.preventDefault();
+    message.className = "message " + type;
 
-        sendMessage();
 
+    const avatar = document.createElement("div");
+
+    avatar.className =
+      type === "user"
+        ? "avatar user-avatar"
+        : "avatar";
+
+
+    if (type === "user") {
+
+      avatar.textContent = "You";
+
+    } else {
+
+      const img = document.createElement("img");
+
+      img.src = "assets/alpha-logo.jpeg";
+
+      img.alt = "Campus AI";
+
+      avatar.appendChild(img);
     }
 
-}
+
+    const bubble = document.createElement("div");
+
+    bubble.className = "bubble";
+
+    bubble.textContent = text;
+
+
+    message.appendChild(avatar);
+
+    message.appendChild(bubble);
+
+    messages.appendChild(message);
+
+
+    messages.scrollTop = messages.scrollHeight;
+
+
+    return message;
+  }
+
+
+  // Send message
+  async function sendMessage() {
+
+    const text = promptBox.value.trim();
+
+
+    if (!text) {
+      return;
+    }
+
+
+    // Remove welcome screen
+    const welcome = document.getElementById("welcome");
+
+    if (welcome) {
+      welcome.remove();
+    }
+
+
+    // Add user message
+    addMessage(text, "user");
+
+
+    // Clear input
+    promptBox.value = "";
+
+
+    // Disable button
+    sendBtn.disabled = true;
+
+
+    // Loading message
+    const loadingMessage =
+      addMessage("Campus AI is thinking...", "assistant");
+
+
+    loadingMessage
+      .querySelector(".bubble")
+      .classList.add("loading");
+
+
+    try {
+
+      /*
+        Send request to Google Apps Script.
+
+        We use text/plain so the browser does not
+        trigger a CORS preflight request.
+      */
+
+      const response = await fetch(API_URL, {
+
+        method: "POST",
+
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8"
+        },
+
+        body: JSON.stringify({
+          message: text
+        })
+
+      });
+
+
+      const result = await response.json();
+
+
+      // Remove loading message
+      loadingMessage.remove();
+
+
+      if (result.success) {
+
+        addMessage(result.answer, "assistant");
+
+      } else {
+
+        addMessage(
+          "Sorry machi 😕\n\n" +
+          (result.error || "Something went wrong."),
+          "assistant"
+        );
+      }
+
+
+    } catch (error) {
+
+      loadingMessage.remove();
+
+      addMessage(
+        "Unable to connect to Campus AI 😕\n\n" +
+        "Please check the Apps Script deployment and try again.",
+        "assistant"
+      );
+
+      console.error(error);
+    }
+
+
+    // Enable button
+    sendBtn.disabled = false;
+
+    promptBox.focus();
+  }
+
+
+  // New chat
+  function newChat() {
+
+    messages.innerHTML = `
+
+      <div class="welcome" id="welcome">
+
+        <img
+          src="assets/alpha-logo.jpeg"
+          alt="Alpha College"
+        >
+
+        <h2>How can I help you today?</h2>
+
+        <p>
+          I'm Campus AI, your smart student assistant.
+          Ask me about programming, studies, notes,
+          quizzes, assignments or any academic topic.
+        </p>
+
+        <div class="suggestions">
+
+          <button
+            class="suggestion"
+            onclick="useSuggestion('Explain Python in simple words')">
+            🐍 Explain Python in simple words
+          </button>
+
+          <button
+            class="suggestion"
+            onclick="useSuggestion('What is Artificial Intelligence?')">
+            🤖 What is Artificial Intelligence?
+          </button>
+
+          <button
+            class="suggestion"
+            onclick="useSuggestion('Create a short quiz about computer science')">
+            🧠 Create a CS quiz
+          </button>
+
+          <button
+            class="suggestion"
+            onclick="useSuggestion('Give me study tips for my exams')">
+            📚 Give me study tips
+          </button>
+
+        </div>
+
+      </div>
+    `;
+
+    promptBox.value = "";
+
+    promptBox.focus();
+  }
 
 </script>
 
