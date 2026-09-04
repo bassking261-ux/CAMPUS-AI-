@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campus AI - Quiz Creator</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#07111f;
+    color:white;
+    min-height:100vh;
+}
+
+.header{
+    height:70px;
+    background:#0c192b;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 30px;
+}
+
+.logo-area{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo{
+    width:45px;
+    height:45px;
+    object-fit:contain;
+    background:white;
+    border-radius:9px;
+    padding:4px;
+}
+
+.brand{
+    font-size:21px;
+    font-weight:800;
+}
+
+.brand span{
+    color:#4da3ff;
+}
+
+.back{
+    background:#17283e;
+    color:white;
+    border:1px solid rgba(255,255,255,.1);
+    padding:10px 16px;
+    border-radius:9px;
+    cursor:pointer;
+}
+
+.main{
+    max-width:1050px;
+    margin:auto;
+    padding:35px 20px;
+}
+
+.title h1{
+    font-size:32px;
+}
+
+.title p{
+    color:#8296ad;
+    margin-top:7px;
+}
+
+.creator{
+    margin-top:25px;
+    background:#0d1b2d;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:18px;
+    padding:22px;
+}
+
+input,select{
+    width:100%;
+    background:#102238;
+    color:white;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:10px;
+    padding:13px;
+    outline:none;
+    margin-bottom:15px;
+}
+
+button{
+    cursor:pointer;
+}
+
+.create-btn{
+    background:#287bd9;
+    color:white;
+    border:0;
+    padding:12px 20px;
+    border-radius:10px;
+    font-weight:bold;
+}
+
+.create-btn:hover{
+    background:#3990ed;
+}
+
+.quiz{
+    display:none;
+    margin-top:25px;
+}
+
+.question-card{
+    background:#0d1b2d;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:17px;
+    padding:22px;
+    margin-bottom:18px;
+}
+
+.question{
+    font-size:17px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+.option{
+    display:block;
+    background:#102238;
+    padding:12px;
+    border-radius:10px;
+    margin:8px 0;
+    cursor:pointer;
+    color:#d9e5f2;
+}
+
+.option:hover{
+    background:#17304d;
+}
+
+.option input{
+    width:auto;
+    margin:0 8px 0 0;
+}
+
+.submit{
+    width:100%;
+    background:#287bd9;
+    color:white;
+    border:0;
+    padding:14px;
+    border-radius:11px;
+    font-weight:bold;
+    font-size:15px;
+}
+
+.result{
+    display:none;
+    text-align:center;
+    margin-top:25px;
+    background:#102238;
+    border-radius:17px;
+    padding:30px;
+}
+
+.score{
+    font-size:40px;
+    font-weight:bold;
+    color:#4da3ff;
+    margin:10px;
+}
+
+@media(max-width:600px){
+    .header{
+        padding:0 15px;
+    }
+
+    .main{
+        padding:25px 15px;
+    }
+
+    .brand{
+        font-size:18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="logo-area">
+        <img src="assets/alpha-logo.jpeg" class="logo">
+        <div class="brand">CAMPUS <span>AI</span></div>
+    </div>
+
+    <button class="back" onclick="location.href='dashboard.html'">
+        ← Dashboard
+    </button>
+
+</header>
+
+
+<main class="main">
+
+    <div class="title">
+        <h1>Quiz Creator 🧠</h1>
+        <p>Create a quick practice quiz and test your knowledge.</p>
+    </div>
+
+
+    <section class="creator">
+
+        <input
+            type="text"
+            id="topic"
+            placeholder="Enter topic e.g. Python, Computer Science"
+        >
+
+        <select id="difficulty">
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+        </select>
+
+        <button class="create-btn" onclick="createQuiz()">
+            ✨ Create Quiz
+        </button>
+
+    </section>
+
+
+    <section class="quiz" id="quiz"></section>
+
+
+    <section class="result" id="result">
+
+        <h2>Quiz Completed 🎉</h2>
+
+        <div class="score" id="score"></div>
+
+        <p id="resultText"></p>
+
+        <br>
+
+        <button class="create-btn" onclick="resetQuiz()">
+            Try Again
+        </button>
+
+    </section>
+
+</main>
+
+
+<script>
+
+let currentQuestions = [];
+
+
+/* Sample question bank */
+
+const questionBank = {
+
+    python:[
+        {
+            q:"Which keyword is used to define a function in Python?",
+            options:["function","def","fun","define"],
+            answer:"def"
+        },
+        {
+            q:"Which symbol is used for comments in Python?",
+            options:["//","#","/*","--"],
+            answer:"#"
+        },
+        {
+            q:"Which data type stores True or False?",
+            options:["String","Integer","Boolean","Float"],
+            answer:"Boolean"
+        },
+        {
+            q:"Which function is used to display output?",
+            options:["display()","show()","print()","output()"],
+            answer:"print()"
+        },
+        {
+            q:"Which extension is commonly used for Python files?",
+            options:[".java",".py",".html",".cpp"],
+            answer:".py"
+        }
+    ],
+
+    computer:[
+        {
+            q:"What does CPU stand for?",
+            options:[
+                "Central Processing Unit",
+                "Computer Personal Unit",
+                "Central Program Utility",
+                "Control Processing User"
+            ],
+            answer:"Central Processing Unit"
+        },
+        {
+            q:"Which one is an input device?",
+            options:["Monitor","Printer","Keyboard","Speaker"],
+            answer:"Keyboard"
+        },
+        {
+            q:"Which memory is temporary?",
+            options:["ROM","RAM","Hard Disk","SSD"],
+            answer:"RAM"
+        },
+        {
+            q:"What does AI stand for?",
+            options:[
+                "Automatic Internet",
+                "Artificial Intelligence",
+                "Advanced Input",
+                "Application Interface"
+            ],
+            answer:"Artificial Intelligence"
+        },
+        {
+            q:"Which is an operating system?",
+            options:["Python","Windows","HTML","Google"],
+            answer:"Windows"
+        }
+    ],
+
+    javascript:[
+        {
+            q:"Which keyword can declare a variable in JavaScript?",
+            options:["let","define","variable","declare"],
+            answer:"let"
+        },
+        {
+            q:"Which symbol is used for single-line comments?",
+            options:["#","//","<!--","**"],
+            answer:"//"
+        },
+        {
+            q:"Which method prints something to the browser console?",
+            options:[
+                "console.log()",
+                "print()",
+                "display()",
+                "writeConsole()"
+            ],
+            answer:"console.log()"
+        },
+        {
+            q:"Which language runs directly in web browsers?",
+            options:["JavaScript","Python","C","SQL"],
+            answer:"JavaScript"
+        },
+        {
+            q:"Which keyword creates a constant?",
+            options:["constant","const","fixed","static"],
+            answer:"const"
+        }
+    ]
+
+};
+
+
+function createQuiz(){
+
+    const topic =
+        document.getElementById("topic").value
+        .trim()
+        .toLowerCase();
+
+    if(!topic){
+
+        alert("Please enter a topic.");
+
+        return;
+    }
+
+    let selected;
+
+    if(topic.includes("python")){
+        selected = questionBank.python;
+    }
+    else if(
+        topic.includes("computer") ||
+        topic.includes("cs") ||
+        topic.includes("ai")
+    ){
+        selected = questionBank.computer;
+    }
+    else if(topic.includes("javascript")){
+        selected = questionBank.javascript;
+    }
+    else{
+
+        selected = questionBank.computer;
+
+        alert(
+            "Demo quiz available for Python, Computer Science and JavaScript."
+        );
+    }
+
+    currentQuestions = selected;
+
+    showQuiz();
+}
+
+
+function showQuiz(){
+
+    const quiz =
+        document.getElementById("quiz");
+
+    const result =
+        document.getElementById("result");
+
+    result.style.display = "none";
+
+    quiz.style.display = "block";
+
+    quiz.innerHTML = "";
+
+    currentQuestions.forEach((question,index)=>{
+
+        const card =
+            document.createElement("div");
+
+        card.className = "question-card";
+
+        let optionsHTML = "";
+
+        question.options.forEach(option=>{
+
+            optionsHTML += `
+                <label class="option">
+                    <input
+                        type="radio"
+                        name="question${index}"
+                        value="${escapeHTML(option)}"
+                    >
+                    ${escapeHTML(option)}
+                </label>
+            `;
+
+        });
+
+        card.innerHTML = `
+            <div class="question">
+                ${index + 1}. ${escapeHTML(question.q)}
+            </div>
+
+            ${optionsHTML}
+        `;
+
+        quiz.appendChild(card);
+
+    });
+
+
+    const submit =
+        document.createElement("button");
+
+    submit.className = "submit";
+
+    submit.textContent = "Submit Quiz";
+
+    submit.onclick = submitQuiz;
+
+    quiz.appendChild(submit);
+
+    quiz.scrollIntoView({
+        behavior:"smooth"
+    });
+}
+
+
+function submitQuiz(){
+
+    let score = 0;
+
+    currentQuestions.forEach((question,index)=>{
+
+        const selected =
+            document.querySelector(
+                `input[name="question${index}"]:checked`
+            );
+
+        if(
+            selected &&
+            selected.value === question.answer
+        ){
+            score++;
+        }
+
+    });
+
+
+    document.getElementById("score").textContent =
+        score + " / " + currentQuestions.length;
+
+
+    document.getElementById("resultText").textContent =
+        score === currentQuestions.length
+        ? "Excellent! Perfect score 🔥"
+        : "Good attempt! Keep learning and try again.";
+
+
+    document.getElementById("result").style.display =
+        "block";
+
+
+    document.getElementById("result").scrollIntoView({
+        behavior:"smooth"
+    });
+
+}
+
+
+function resetQuiz(){
+
+    document.getElementById("quiz").style.display =
+        "none";
+
+    document.getElementById("result").style.display =
+        "none";
+
+    document.getElementById("topic").value = "";
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+function escapeHTML(text){
+
+    const div = document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+}
+
+</script>
+
+</body>
+</html>
