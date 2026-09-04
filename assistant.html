@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -211,6 +211,10 @@ body{
     border-bottom-right-radius:4px;
 }
 
+.typing{
+    opacity:.7;
+}
+
 .input-area{
     padding:15px 8% 22px;
     background:linear-gradient(transparent,#07111f 25%);
@@ -270,10 +274,6 @@ textarea{
     margin-top:8px;
 }
 
-.typing{
-    opacity:.7;
-}
-
 @media(max-width:750px){
 
     .sidebar{
@@ -312,11 +312,17 @@ textarea{
 <header class="header">
 
     <div class="logo-area">
-        <img src="assets/alpha-logo.jpeg" class="logo" alt="Alpha College Logo">
-        <div class="brand">CAMPUS <span>AI</span></div>
+        <img src="assets/alpha-logo.jpeg"
+             class="logo"
+             alt="Alpha College Logo">
+
+        <div class="brand">
+            CAMPUS <span>AI</span>
+        </div>
     </div>
 
-    <button class="back" onclick="location.href='dashboard.html'">
+    <button class="back"
+            onclick="location.href='dashboard.html'">
         ← Dashboard
     </button>
 
@@ -332,21 +338,25 @@ textarea{
             🤖 AI Assistant
         </button>
 
-        <button class="side-btn" onclick="location.href='notes.html'">
+        <button class="side-btn"
+                onclick="location.href='notes.html'">
             📝 Smart Notes
         </button>
 
-        <button class="side-btn" onclick="location.href='quiz.html'">
+        <button class="side-btn"
+                onclick="location.href='quiz.html'">
             🧠 Quiz Creator
         </button>
 
         <h3>STUDENT</h3>
 
-        <button class="side-btn" onclick="location.href='calendar.html'">
+        <button class="side-btn"
+                onclick="location.href='calendar.html'">
             📅 Calendar
         </button>
 
-        <button class="side-btn" onclick="location.href='inbox.html'">
+        <button class="side-btn"
+                onclick="location.href='inbox.html'">
             📥 Inbox
         </button>
 
@@ -363,7 +373,9 @@ textarea{
 
             <div class="welcome" id="welcome">
 
-                <div class="ai-icon">🤖</div>
+                <div class="ai-icon">
+                    🤖
+                </div>
 
                 <h2>How can I help you?</h2>
 
@@ -402,7 +414,10 @@ textarea{
                     onkeydown="handleKey(event)"
                 ></textarea>
 
-                <button class="send" id="sendButton" onclick="sendMessage()">
+                <button
+                    class="send"
+                    id="sendButton"
+                    onclick="sendMessage()">
                     ➤
                 </button>
 
@@ -420,80 +435,100 @@ textarea{
 
 <script>
 
+/* YOUR NEW APPS SCRIPT WEB APP */
 const API_URL =
-"https://script.google.com/macros/s/AKfycbw2EF3UZ-dfD35BZqlD7TL3Xs6aHnxV0UMK7OrjCbZekBsbHTaZGjaRNJ1x4NWrWTplxA/exec";
+"https://script.google.com/macros/s/AKfycbygXZqnFGPIUS-wDRXvvqPlickTi494H1rjv3bvl3D-36xkXTsoCrVUEYlbEsbw13TQoQ/exec";
 
 
 function addMessage(text, type){
 
-    const messages = document.getElementById("messages");
+    const messages =
+        document.getElementById("messages");
 
-    const welcome = document.getElementById("welcome");
+    const welcome =
+        document.getElementById("welcome");
 
     if(welcome){
         welcome.remove();
     }
 
-    const message = document.createElement("div");
+    const message =
+        document.createElement("div");
 
-    message.className = "message " + type;
+    message.className =
+        "message " + type;
 
-    const bubble = document.createElement("div");
+    const bubble =
+        document.createElement("div");
 
-    bubble.className = "bubble";
+    bubble.className =
+        "bubble";
 
-    bubble.textContent = text;
+    bubble.textContent =
+        text;
 
     message.appendChild(bubble);
 
     messages.appendChild(message);
 
-    messages.scrollTop = messages.scrollHeight;
-
+    messages.scrollTop =
+        messages.scrollHeight;
 }
 
 
 function addTypingMessage(){
 
-    const messages = document.getElementById("messages");
+    const messages =
+        document.getElementById("messages");
 
-    const message = document.createElement("div");
+    const message =
+        document.createElement("div");
 
-    message.className = "message ai";
-    message.id = "typingMessage";
+    message.className =
+        "message ai";
 
-    const bubble = document.createElement("div");
+    message.id =
+        "typingMessage";
 
-    bubble.className = "bubble typing";
+    const bubble =
+        document.createElement("div");
 
-    bubble.textContent = "Thinking... 🤖";
+    bubble.className =
+        "bubble typing";
+
+    bubble.textContent =
+        "Thinking... 🤖";
 
     message.appendChild(bubble);
 
     messages.appendChild(message);
 
-    messages.scrollTop = messages.scrollHeight;
-
+    messages.scrollTop =
+        messages.scrollHeight;
 }
 
 
 function removeTypingMessage(){
 
-    const typing = document.getElementById("typingMessage");
+    const typing =
+        document.getElementById("typingMessage");
 
     if(typing){
         typing.remove();
     }
-
 }
 
 
 async function sendMessage(){
 
-    const input = document.getElementById("prompt");
-    const sendButton = document.getElementById("sendButton");
+    const input =
+        document.getElementById("prompt");
 
-    const text = input.value.trim();
+    const sendButton =
+        document.getElementById("sendButton");
+
+    const text =
+        input.value.trim();
 
     if(!text){
         return;
@@ -509,44 +544,52 @@ async function sendMessage(){
 
     try{
 
-        const response = await fetch(API_URL, {
+        const response =
+            await fetch(API_URL, {
 
-            method: "POST",
+                method:"POST",
 
-            headers: {
-                "Content-Type": "text/plain;charset=utf-8"
-            },
+                headers:{
+                    "Content-Type":
+                        "text/plain;charset=utf-8"
+                },
 
-            body: JSON.stringify({
-                message: text
-            })
+                body:JSON.stringify({
+                    message:text
+                })
 
-        });
+            });
 
 
         if(!response.ok){
 
             throw new Error(
-                "Server returned status " + response.status
+                "Server error: " +
+                response.status
             );
 
         }
 
 
-        const result = await response.json();
+        const result =
+            await response.json();
 
         removeTypingMessage();
 
 
         if(result.success){
 
-            addMessage(result.answer, "ai");
+            addMessage(
+                result.answer,
+                "ai"
+            );
 
         }else{
 
             addMessage(
                 "Sorry machii 😕\n\n" +
-                (result.error || "Something went wrong."),
+                (result.error ||
+                "Something went wrong."),
                 "ai"
             );
 
@@ -555,13 +598,16 @@ async function sendMessage(){
 
     }catch(error){
 
-        console.error("Campus AI Error:", error);
+        console.error(
+            "Campus AI Error:",
+            error
+        );
 
         removeTypingMessage();
 
         addMessage(
             "Connection error 😕\n\n" +
-            "Please check the Apps Script Web App deployment and try again.",
+            "Please check the Apps Script backend.",
             "ai"
         );
 
@@ -571,22 +617,24 @@ async function sendMessage(){
     sendButton.disabled = false;
 
     input.focus();
-
 }
 
 
 function askSuggestion(text){
 
-    document.getElementById("prompt").value = text;
+    document.getElementById("prompt").value =
+        text;
 
     sendMessage();
-
 }
 
 
 function handleKey(event){
 
-    if(event.key === "Enter" && !event.shiftKey){
+    if(
+        event.key === "Enter" &&
+        !event.shiftKey
+    ){
 
         event.preventDefault();
 
