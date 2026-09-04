@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Campus AI - College Calendar</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#07111f;
+    color:white;
+    min-height:100vh;
+}
+
+.header{
+    height:70px;
+    background:#0c192b;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 30px;
+}
+
+.logo-area{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo{
+    width:45px;
+    height:45px;
+    object-fit:contain;
+    background:white;
+    border-radius:9px;
+    padding:4px;
+}
+
+.brand{
+    font-size:21px;
+    font-weight:800;
+}
+
+.brand span{
+    color:#4da3ff;
+}
+
+.back{
+    background:#17283e;
+    color:white;
+    border:1px solid rgba(255,255,255,.1);
+    padding:10px 16px;
+    border-radius:9px;
+    cursor:pointer;
+}
+
+.main{
+    max-width:1200px;
+    margin:auto;
+    padding:35px 20px;
+}
+
+.title h1{
+    font-size:32px;
+}
+
+.title p{
+    color:#8296ad;
+    margin-top:7px;
+}
+
+.calendar-box{
+    margin-top:28px;
+    background:#0d1b2d;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:20px;
+    padding:25px;
+}
+
+.month-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.month-header h2{
+    font-size:24px;
+}
+
+.month-header button{
+    width:38px;
+    height:38px;
+    border:0;
+    border-radius:9px;
+    background:#172b43;
+    color:white;
+    font-size:20px;
+    cursor:pointer;
+}
+
+.month-header button:hover{
+    background:#287bd9;
+}
+
+.weekdays,
+.days{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:8px;
+}
+
+.weekdays div{
+    text-align:center;
+    color:#71869e;
+    font-size:13px;
+    padding:10px 0;
+}
+
+.day{
+    min-height:80px;
+    background:#102238;
+    border-radius:10px;
+    padding:10px;
+    cursor:pointer;
+    position:relative;
+    border:1px solid transparent;
+}
+
+.day:hover{
+    border-color:#438ee8;
+}
+
+.day.today{
+    border-color:#4da3ff;
+}
+
+.day.event-day{
+    background:#132c46;
+}
+
+.date{
+    font-weight:bold;
+}
+
+.event-dot{
+    width:7px;
+    height:7px;
+    background:#4da3ff;
+    border-radius:50%;
+    margin-top:10px;
+}
+
+.events{
+    margin-top:30px;
+}
+
+.events h2{
+    margin-bottom:15px;
+}
+
+.event-card{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    background:#102238;
+    border:1px solid rgba(255,255,255,.07);
+    padding:17px;
+    border-radius:13px;
+    margin-bottom:10px;
+}
+
+.event-date{
+    width:55px;
+    height:55px;
+    border-radius:12px;
+    background:#172f4b;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+}
+
+.event-date strong{
+    font-size:18px;
+}
+
+.event-date small{
+    color:#7f94aa;
+}
+
+.event-info h3{
+    font-size:16px;
+    margin-bottom:5px;
+}
+
+.event-info p{
+    color:#8296ad;
+    font-size:13px;
+}
+
+.no-events{
+    color:#70859c;
+    background:#102238;
+    padding:20px;
+    border-radius:12px;
+}
+
+@media(max-width:650px){
+
+    .header{
+        padding:0 15px;
+    }
+
+    .main{
+        padding:25px 15px;
+    }
+
+    .brand{
+        font-size:18px;
+    }
+
+    .calendar-box{
+        padding:15px;
+    }
+
+    .weekdays,
+    .days{
+        gap:4px;
+    }
+
+    .day{
+        min-height:55px;
+        padding:6px;
+        font-size:12px;
+    }
+
+    .event-dot{
+        margin-top:5px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="logo-area">
+        <img src="assets/alpha-logo.jpeg" class="logo">
+
+        <div class="brand">
+            CAMPUS <span>AI</span>
+        </div>
+    </div>
+
+    <button class="back"
+            onclick="location.href='dashboard.html'">
+        ← Dashboard
+    </button>
+
+</header>
+
+
+<main class="main">
+
+    <div class="title">
+        <h1>College Calendar 📅</h1>
+        <p>Track important college events, exams and deadlines.</p>
+    </div>
+
+
+    <section class="calendar-box">
+
+        <div class="month-header">
+
+            <button onclick="previousMonth()">‹</button>
+
+            <h2 id="monthYear"></h2>
+
+            <button onclick="nextMonth()">›</button>
+
+        </div>
+
+
+        <div class="weekdays">
+
+            <div>Sun</div>
+            <div>Mon</div>
+            <div>Tue</div>
+            <div>Wed</div>
+            <div>Thu</div>
+            <div>Fri</div>
+            <div>Sat</div>
+
+        </div>
+
+
+        <div class="days" id="days"></div>
+
+    </section>
+
+
+    <section class="events">
+
+        <h2>Upcoming Events 📌</h2>
+
+        <div id="eventList"></div>
+
+    </section>
+
+</main>
+
+
+<script>
+
+let currentDate = new Date();
+
+
+/*
+   Demo college events.
+   Later you can replace these
+   with your actual college dates.
+*/
+
+const events = [
+
+    {
+        date:"2026-09-10",
+        title:"Internal Examination",
+        description:"Internal assessment examination"
+    },
+
+    {
+        date:"2026-09-15",
+        title:"College Event",
+        description:"Campus activity"
+    },
+
+    {
+        date:"2026-09-20",
+        title:"Assignment Deadline",
+        description:"Assignment submission"
+    },
+
+    {
+        date:"2026-09-25",
+        title:"Department Activity",
+        description:"Department related activity"
+    }
+
+];
+
+
+function renderCalendar(){
+
+    const year = currentDate.getFullYear();
+
+    const month = currentDate.getMonth();
+
+
+    const monthNames = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+    ];
+
+
+    document.getElementById("monthYear").textContent =
+        monthNames[month] + " " + year;
+
+
+    const firstDay =
+        new Date(year,month,1).getDay();
+
+
+    const totalDays =
+        new Date(year,month + 1,0).getDate();
+
+
+    const daysContainer =
+        document.getElementById("days");
+
+
+    daysContainer.innerHTML = "";
+
+
+    for(let i=0;i<firstDay;i++){
+
+        const empty =
+            document.createElement("div");
+
+        daysContainer.appendChild(empty);
+
+    }
+
+
+    for(let day=1;day<=totalDays;day++){
+
+        const cell =
+            document.createElement("div");
+
+        cell.className = "day";
+
+
+        const dateString =
+            year + "-" +
+            String(month + 1).padStart(2,"0") + "-" +
+            String(day).padStart(2,"0");
+
+
+        const today = new Date();
+
+
+        if(
+            day === today.getDate() &&
+            month === today.getMonth() &&
+            year === today.getFullYear()
+        ){
+
+            cell.classList.add("today");
+
+        }
+
+
+        const event =
+            events.find(e => e.date === dateString);
+
+
+        if(event){
+
+            cell.classList.add("event-day");
+
+        }
+
+
+        cell.innerHTML = `
+            <div class="date">${day}</div>
+            ${event ? '<div class="event-dot"></div>' : ''}
+        `;
+
+
+        cell.onclick = function(){
+
+            if(event){
+
+                alert(
+                    event.title +
+                    "\n\n" +
+                    event.description
+                );
+
+            }
+
+        };
+
+
+        daysContainer.appendChild(cell);
+
+    }
+
+}
+
+
+function renderEvents(){
+
+    const list =
+        document.getElementById("eventList");
+
+
+    list.innerHTML = "";
+
+
+    const today =
+        new Date().toISOString().split("T")[0];
+
+
+    const upcoming =
+        events
+        .filter(event => event.date >= today)
+        .sort((a,b) =>
+            new Date(a.date) - new Date(b.date)
+        );
+
+
+    if(upcoming.length === 0){
+
+        list.innerHTML = `
+            <div class="no-events">
+                🎉 No upcoming events.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    upcoming.forEach(event => {
+
+        const date =
+            new Date(event.date + "T00:00:00");
+
+
+        const day =
+            date.getDate();
+
+
+        const month =
+            date.toLocaleString("en-US",{
+                month:"short"
+            });
+
+
+        const card =
+            document.createElement("div");
+
+
+        card.className = "event-card";
+
+
+        card.innerHTML = `
+            <div class="event-date">
+                <strong>${day}</strong>
+                <small>${month}</small>
+            </div>
+
+            <div class="event-info">
+                <h3>${event.title}</h3>
+                <p>${event.description}</p>
+            </div>
+        `;
+
+
+        list.appendChild(card);
+
+    });
+
+}
+
+
+function previousMonth(){
+
+    currentDate.setMonth(
+        currentDate.getMonth() - 1
+    );
+
+    renderCalendar();
+
+}
+
+
+function nextMonth(){
+
+    currentDate.setMonth(
+        currentDate.getMonth() + 1
+    );
+
+    renderCalendar();
+
+}
+
+
+renderCalendar();
+renderEvents();
+
+</script>
+
+</body>
+</html>
