@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Campus AI | Alpha Arts & Science College</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            min-height: 100vh;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* ---------- BACKGROUND ---------- */
+
+        .page {
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.35), transparent 28%),
+                radial-gradient(circle at 90% 80%, rgba(14, 165, 233, 0.25), transparent 30%),
+                linear-gradient(135deg, #07152f 0%, #0b1f42 45%, #061226 100%);
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(2px);
+            opacity: .5;
+        }
+
+        .orb.one {
+            width: 260px;
+            height: 260px;
+            background: #2563eb;
+            top: -100px;
+            right: 10%;
+        }
+
+        .orb.two {
+            width: 200px;
+            height: 200px;
+            background: #06b6d4;
+            bottom: -80px;
+            left: 5%;
+        }
+
+        /* ---------- NAVBAR ---------- */
+
+        .navbar {
+            width: 100%;
+            padding: 20px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 5;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand img {
+            width: 52px;
+            height: 52px;
+            object-fit: contain;
+            background: white;
+            border-radius: 12px;
+            padding: 5px;
+        }
+
+        .brand-text h2 {
+            font-size: 21px;
+            letter-spacing: 1px;
+        }
+
+        .brand-text p {
+            color: #a8b9d6;
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        .event-tag {
+            padding: 9px 15px;
+            border: 1px solid rgba(255,255,255,.2);
+            border-radius: 30px;
+            background: rgba(255,255,255,.07);
+            backdrop-filter: blur(12px);
+            font-size: 13px;
+            color: #dbeafe;
+        }
+
+        /* ---------- MAIN ---------- */
+
+        .main {
+            min-height: calc(100vh - 92px);
+            width: 86%;
+            max-width: 1250px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: 1.1fr .9fr;
+            gap: 70px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            padding: 35px 0 60px;
+        }
+
+        /* ---------- LEFT SIDE ---------- */
+
+        .hero {
+            max-width: 650px;
+        }
+
+        .small-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            background: rgba(255,255,255,.08);
+            border: 1px solid rgba(255,255,255,.15);
+            border-radius: 30px;
+            color: #bfdbfe;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            box-shadow: 0 0 12px #22c55e;
+        }
+
+        .hero h1 {
+            font-size: clamp(52px, 7vw, 88px);
+            line-height: .95;
+            letter-spacing: -4px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(90deg, #60a5fa, #22d3ee, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero h3 {
+            font-size: 23px;
+            font-weight: 500;
+            color: #e2e8f0;
+            margin-bottom: 16px;
+        }
+
+        .hero-description {
+            max-width: 570px;
+            color: #9fb0ca;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 28px;
+        }
+
+        .feature {
+            padding: 9px 13px;
+            border-radius: 9px;
+            background: rgba(255,255,255,.06);
+            border: 1px solid rgba(255,255,255,.1);
+            color: #cbd5e1;
+            font-size: 13px;
+        }
+
+        /* ---------- LOGIN CARD ---------- */
+
+        .login-card {
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            padding: 34px;
+            border-radius: 28px;
+
+            background: rgba(255,255,255,.09);
+            border: 1px solid rgba(255,255,255,.18);
+            backdrop-filter: blur(25px);
+
+            box-shadow:
+                0 30px 80px rgba(0,0,0,.35),
+                inset 0 1px 0 rgba(255,255,255,.12);
+        }
+
+        .card-top {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .card-icon {
+            width: 70px;
+            height: 70px;
+            margin: auto;
+            border-radius: 20px;
+            display: grid;
+            place-items: center;
+            background: white;
+            box-shadow: 0 10px 35px rgba(0,0,0,.2);
+            margin-bottom: 17px;
+        }
+
+        .card-icon img {
+            width: 58px;
+            height: 58px;
+            object-fit: contain;
+        }
+
+        .card-top h2 {
+            font-size: 25px;
+            margin-bottom: 7px;
+        }
+
+        .card-top p {
+            color: #9fb0ca;
+            font-size: 13px;
+        }
+
+        .input-group {
+            margin-bottom: 17px;
+        }
+
+        .input-group label {
+            display: block;
+            color: #dbeafe;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .input {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,.15);
+            background: rgba(0,0,0,.18);
+            color: white;
+            outline: none;
+            font-size: 14px;
+            transition: .25s;
+        }
+
+        .input::placeholder {
+            color: #71829d;
+        }
+
+        .input:focus {
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96,165,250,.12);
+        }
+
+        .continue-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 13px;
+            background: linear-gradient(100deg, #2563eb, #06b6d4);
+            color: white;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 5px;
+            transition: .25s;
+            box-shadow: 0 12px 30px rgba(37,99,235,.28);
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 17px 38px rgba(37,99,235,.38);
+        }
+
+        .privacy {
+            text-align: center;
+            color: #71829d;
+            font-size: 11px;
+            line-height: 1.6;
+            margin-top: 17px;
+        }
+
+        .status {
+            text-align: center;
+            margin-top: 12px;
+            font-size: 13px;
+        }
+
+        .success {
+            color: #4ade80;
+        }
+
+        .error {
+            color: #fb7185;
+        }
+
+        /* ---------- FOOTER ---------- */
+
+        .footer {
+            position: absolute;
+            bottom: 18px;
+            left: 7%;
+            color: #61728d;
+            font-size: 11px;
+            z-index: 4;
+        }
+
+        /* ---------- MOBILE ---------- */
+
+        @media (max-width: 900px) {
+
+            .navbar {
+                padding: 16px 5%;
+            }
+
+            .event-tag {
+                display: none;
+            }
+
+            .main {
+                width: 90%;
+                grid-template-columns: 1fr;
+                gap: 40px;
+                padding-top: 30px;
+            }
+
+            .hero {
+                text-align: center;
+                margin: auto;
+            }
+
+            .small-label {
+                margin-bottom: 15px;
+            }
+
+            .hero h1 {
+                font-size: 58px;
+                letter-spacing: -3px;
+            }
+
+            .hero-description {
+                margin: auto;
+            }
+
+            .features {
+                justify-content: center;
+            }
+
+            .login-card {
+                margin: auto;
+            }
+
+            .footer {
+                position: static;
+                text-align: center;
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .brand img {
+                width: 43px;
+                height: 43px;
+            }
+
+            .brand-text h2 {
+                font-size: 17px;
+            }
+
+            .brand-text p {
+                font-size: 10px;
+            }
+
+            .main {
+                padding-top: 15px;
+            }
+
+            .hero h1 {
+                font-size: 48px;
+            }
+
+            .hero h3 {
+                font-size: 19px;
+            }
+
+            .login-card {
+                padding: 24px 20px;
+                border-radius: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+
+        <div class="brand">
+
+            <img src="assets/alpha-logo.jpeg"
+                 alt="Alpha Arts and Science College">
+
+            <div class="brand-text">
+                <h2>CAMPUS AI</h2>
+                <p>Alpha Arts & Science College</p>
+            </div>
+
+        </div>
+
+        <div class="event-tag">
+            ✦ Prompt to Product
+        </div>
+
+    </nav>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <!-- LEFT -->
+        <section class="hero">
+
+            <div class="small-label">
+                <span class="dot"></span>
+                Smart Student Platform
+            </div>
+
+            <h1>
+                CAMPUS<br>
+                <span>AI.</span>
+            </h1>
+
+            <h3>
+                Your Smart Campus Companion
+            </h3>
+
+            <p class="hero-description">
+                A student-focused digital platform designed to make
+                learning, revision, quizzes, college events and
+                student support easier — all in one place.
+            </p>
+
+            <div class="features">
+
+                <div class="feature">🤖 AI Assistant</div>
+
+                <div class="feature">📚 Smart Notes</div>
+
+                <div class="feature">📝 Quiz Creator</div>
+
+                <div class="feature">📅 Event Reminders</div>
+
+                <div class="feature">📩 Student Inbox</div>
+
+            </div>
+
+        </section>
+
+
+        <!-- LOGIN -->
+        <section class="login-card">
+
+            <div class="card-top">
+
+                <div class="card-icon">
+
+                    <img src="assets/alpha-logo.jpeg"
+                         alt="Alpha College Logo">
+
+                </div>
+
+                <h2>Student Access</h2>
+
+                <p>
+                    Verify your details to enter Campus AI
+                </p>
+
+            </div>
+
+
+            <form id="loginForm">
+
+                <div class="input-group">
+
+                    <label>Student Name</label>
+
+                    <input
+                        class="input"
+                        id="studentName"
+                        type="text"
+                        placeholder="Enter your full name"
+                        required>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>Email Address</label>
+
+                    <input
+                        class="input"
+                        id="studentEmail"
+                        type="email"
+                        placeholder="Enter your email"
+                        required>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>Phone Number</label>
+
+                    <input
+                        class="input"
+                        id="studentPhone"
+                        type="tel"
+                        placeholder="Enter your phone number"
+                        maxlength="10"
+                        required>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="continue-btn">
+
+                    Verify & Continue
+                    →
+                    
+                </button>
+
+                <div
+                    id="status"
+                    class="status">
+                </div>
+
+            </form>
+
+
+            <p class="privacy">
+                🔒 Your information is used only for
+                Campus AI student access.
+            </p>
+
+        </section>
+
+    </main>
+
+
+    <div class="footer">
+        © 2026 Campus AI · Alpha Arts & Science College
+    </div>
+
+</div>
+
+
+<script>
+
+    /*
+    ==========================================
+    CAMPUS AI LOGIN
+    ==========================================
+    */
+
+    const GOOGLE_SCRIPT_URL =
+        "PASTE_YOUR_DEPLOYED_APPS_SCRIPT_URL_HERE";
+
+
+    document
+        .getElementById("loginForm")
+        .addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+            const name =
+                document
+                .getElementById("studentName")
+                .value
+                .trim();
+
+            const email =
+                document
+                .getElementById("studentEmail")
+                .value
+                .trim();
+
+            const phone =
+                document
+                .getElementById("studentPhone")
+                .value
+                .trim();
+
+            const status =
+                document.getElementById("status");
+
+
+            /* BASIC VALIDATION */
+
+            if (!name || !email || !phone) {
+
+                status.className = "status error";
+
+                status.textContent =
+                    "Please fill in all details.";
+
+                return;
+            }
+
+
+            if (phone.length !== 10) {
+
+                status.className = "status error";
+
+                status.textContent =
+                    "Please enter a valid 10-digit phone number.";
+
+                return;
+            }
+
+
+            status.className = "status";
+
+            status.textContent =
+                "Verifying your details...";
+
+
+            /*
+            ======================================
+            GOOGLE SHEETS CONNECTION
+            ======================================
+            */
+
+            if (
+                GOOGLE_SCRIPT_URL &&
+                !GOOGLE_SCRIPT_URL.includes("PASTE_YOUR")
+            ) {
+
+                const url =
+                    GOOGLE_SCRIPT_URL +
+                    "?" +
+                    new URLSearchParams({
+
+                        name: name,
+                        email: email,
+                        phone: phone
+
+                    }).toString();
+
+
+                try {
+
+                    await fetch(url, {
+                        method: "GET",
+                        mode: "no-cors"
+                    });
+
+                } catch (error) {
+
+                    console.log(
+                        "Google Sheet connection error:",
+                        error
+                    );
+
+                }
+
+            }
+
+
+            /* SAVE USER LOCALLY */
+
+            localStorage.setItem(
+                "campusAIUser",
+                JSON.stringify({
+                    name: name,
+                    email: email,
+                    phone: phone
+                })
+            );
+
+
+            status.className =
+                "status success";
+
+            status.textContent =
+                "✓ Verification successful";
+
+
+            /*
+            ======================================
+            NEXT PAGE
+            ======================================
+            */
+
+            setTimeout(function() {
+
+                window.location.href =
+                    "dashboard.html";
+
+            }, 900);
+
+        });
+
+</script>
+
+</body>
+</html>
