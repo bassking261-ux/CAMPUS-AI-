@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campus AI - Dashboard</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#07111f;
+    color:white;
+    min-height:100vh;
+}
+
+.header{
+    height:75px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 35px;
+    background:rgba(12,25,43,.95);
+    border-bottom:1px solid rgba(255,255,255,.08);
+    position:sticky;
+    top:0;
+    z-index:10;
+}
+
+.logo-area{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo{
+    width:48px;
+    height:48px;
+    object-fit:contain;
+    border-radius:10px;
+    background:white;
+    padding:4px;
+}
+
+.brand{
+    font-size:22px;
+    font-weight:800;
+    letter-spacing:1px;
+}
+
+.brand span{
+    color:#4da3ff;
+}
+
+.profile{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#4da3ff,#7c4dff);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+.main{
+    padding:35px;
+    max-width:1400px;
+    margin:auto;
+}
+
+.welcome{
+    margin-bottom:30px;
+}
+
+.welcome h1{
+    font-size:34px;
+    margin-bottom:8px;
+}
+
+.welcome p{
+    color:#91a4bb;
+    font-size:16px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+}
+
+.card{
+    background:linear-gradient(145deg,#102238,#0b1829);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:20px;
+    padding:25px;
+    min-height:180px;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+    border-color:#3e8cff;
+    box-shadow:0 15px 40px rgba(0,0,0,.3);
+}
+
+.icon{
+    width:50px;
+    height:50px;
+    border-radius:14px;
+    background:rgba(77,163,255,.12);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:25px;
+    margin-bottom:20px;
+}
+
+.card h2{
+    font-size:19px;
+    margin-bottom:8px;
+}
+
+.card p{
+    color:#8ea0b5;
+    line-height:1.5;
+    font-size:14px;
+}
+
+.section-title{
+    margin:38px 0 18px;
+    font-size:22px;
+}
+
+.quick{
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr;
+    gap:20px;
+}
+
+.panel{
+    background:#0d1b2d;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:20px;
+    padding:25px;
+}
+
+.panel h3{
+    margin-bottom:18px;
+}
+
+.event{
+    padding:14px;
+    margin-bottom:10px;
+    background:#12243a;
+    border-radius:12px;
+    display:flex;
+    justify-content:space-between;
+}
+
+.event small{
+    color:#8da1b8;
+}
+
+.stat{
+    text-align:center;
+}
+
+.stat .number{
+    font-size:34px;
+    font-weight:bold;
+    color:#4da3ff;
+}
+
+.stat p{
+    color:#8da1b8;
+    margin-top:6px;
+}
+
+.logout{
+    margin-top:30px;
+    background:#18283d;
+    color:white;
+    border:1px solid rgba(255,255,255,.1);
+    padding:12px 20px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.logout:hover{
+    background:#233b58;
+}
+
+@media(max-width:1000px){
+    .grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .quick{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:600px){
+    .header{
+        padding:0 15px;
+    }
+
+    .main{
+        padding:20px 15px;
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .welcome h1{
+        font-size:27px;
+    }
+
+    .brand{
+        font-size:18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="logo-area">
+        <img src="assets/alpha-logo.jpeg" class="logo">
+        <div class="brand">
+            CAMPUS <span>AI</span>
+        </div>
+    </div>
+
+    <div class="profile">
+        <div>
+            <strong id="studentName">Student</strong>
+        </div>
+        <div class="avatar" id="avatar">S</div>
+    </div>
+
+</header>
+
+
+<main class="main">
+
+    <section class="welcome">
+        <h1>Welcome back, <span id="welcomeName">Student</span> 👋</h1>
+        <p>Your smart campus companion is ready to help you.</p>
+    </section>
+
+
+    <section class="grid">
+
+        <div class="card" onclick="openPage('assistant.html')">
+            <div class="icon">🤖</div>
+            <h2>AI Assistant</h2>
+            <p>Ask questions, learn concepts and get instant study support.</p>
+        </div>
+
+        <div class="card" onclick="openPage('notes.html')">
+            <div class="icon">📝</div>
+            <h2>Smart Notes</h2>
+            <p>Create, organize and access your study notes easily.</p>
+        </div>
+
+        <div class="card" onclick="openPage('quiz.html')">
+            <div class="icon">🧠</div>
+            <h2>Quiz Creator</h2>
+            <p>Generate quizzes and test your knowledge.</p>
+        </div>
+
+        <div class="card" onclick="openPage('calendar.html')">
+            <div class="icon">📅</div>
+            <h2>College Calendar</h2>
+            <p>Track exams, events, holidays and important dates.</p>
+        </div>
+
+        <div class="card" onclick="openPage('inbox.html')">
+            <div class="icon">📥</div>
+            <h2>Student Inbox</h2>
+            <p>Send complaints, requests and messages to the college.</p>
+        </div>
+
+        <div class="card" onclick="alert('Attendance module coming soon!')">
+            <div class="icon">📊</div>
+            <h2>Attendance</h2>
+            <p>View your attendance and academic progress.</p>
+        </div>
+
+        <div class="card" onclick="alert('Assignments module coming soon!')">
+            <div class="icon">📚</div>
+            <h2>Assignments</h2>
+            <p>Manage your assignments and submission deadlines.</p>
+        </div>
+
+        <div class="card" onclick="openPage('settings.html')">
+            <div class="icon">⚙️</div>
+            <h2>Settings</h2>
+            <p>Manage your Campus AI account and preferences.</p>
+        </div>
+
+    </section>
+
+
+    <h2 class="section-title">Campus Overview</h2>
+
+    <section class="quick">
+
+        <div class="panel">
+            <h3>📅 Upcoming Events</h3>
+
+            <div class="event">
+                <div>
+                    <strong>Internal Examination</strong><br>
+                    <small>Academic Assessment</small>
+                </div>
+                <strong>SEP</strong>
+            </div>
+
+            <div class="event">
+                <div>
+                    <strong>College Event</strong><br>
+                    <small>Campus Activity</small>
+                </div>
+                <strong>SEP</strong>
+            </div>
+
+            <div class="event">
+                <div>
+                    <strong>Assignment Deadline</strong><br>
+                    <small>Submission</small>
+                </div>
+                <strong>SEP</strong>
+            </div>
+
+        </div>
+
+
+        <div class="panel stat">
+            <h3>📚 Learning</h3>
+            <div class="number">0</div>
+            <p>Quizzes Completed</p>
+        </div>
+
+
+        <div class="panel stat">
+            <h3>📝 Notes</h3>
+            <div class="number">0</div>
+            <p>Saved Notes</p>
+        </div>
+
+    </section>
+
+
+    <button class="logout" onclick="logout()">Logout</button>
+
+</main>
+
+
+<script>
+
+const user = JSON.parse(localStorage.getItem("campusUser"));
+
+if(user){
+
+    const name = user.name || "Student";
+
+    document.getElementById("studentName").textContent = name;
+    document.getElementById("welcomeName").textContent = name;
+
+    document.getElementById("avatar").textContent =
+        name.charAt(0).toUpperCase();
+
+}else{
+
+    document.getElementById("studentName").textContent = "Student";
+    document.getElementById("welcomeName").textContent = "Student";
+
+}
+
+
+function openPage(page){
+
+    window.location.href = page;
+
+}
+
+
+function logout(){
+
+    localStorage.removeItem("campusUser");
+
+    window.location.href = "index.html";
+
+}
+
+</script>
+
+</body>
+</html>
