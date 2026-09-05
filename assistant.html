@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Campus AI - Assistant</title>
 
   <style>
@@ -207,7 +206,7 @@
 
     .user-avatar {
       background: #28558a;
-      font-size: 14px;
+      font-size: 11px;
     }
 
     .bubble {
@@ -301,7 +300,6 @@
       color: #53657b;
     }
 
-    /* MOBILE */
     @media (max-width: 700px) {
       .sidebar {
         display: none;
@@ -345,6 +343,7 @@
 
     <div class="brand">
       <img src="assets/alpha-logo.jpeg" alt="Alpha College">
+
       <div>
         <h2>Campus <span>AI</span></h2>
       </div>
@@ -402,22 +401,26 @@
 
         <div class="suggestions">
 
-          <button class="suggestion"
+          <button
+            class="suggestion"
             onclick="useSuggestion('Explain Python in simple words')">
             🐍 Explain Python in simple words
           </button>
 
-          <button class="suggestion"
+          <button
+            class="suggestion"
             onclick="useSuggestion('What is Artificial Intelligence?')">
             🤖 What is Artificial Intelligence?
           </button>
 
-          <button class="suggestion"
+          <button
+            class="suggestion"
             onclick="useSuggestion('Create a short quiz about computer science')">
             🧠 Create a CS quiz
           </button>
 
-          <button class="suggestion"
+          <button
+            class="suggestion"
             onclick="useSuggestion('Give me study tips for my exams')">
             📚 Give me study tips
           </button>
@@ -444,8 +447,7 @@
         <button
           class="send"
           id="sendBtn"
-          onclick="sendMessage()"
-        >
+          onclick="sendMessage()">
           ➤
         </button>
 
@@ -464,13 +466,12 @@
 
 <script>
 
-  /*
-    IMPORTANT:
-    This is your Google Apps Script Web App URL.
-  */
+  /* =========================================
+     CAMPUS AI GOOGLE APPS SCRIPT URL
+     ========================================= */
 
   const API_URL =
-    "https://script.google.com/macros/s/AKfycby4fs6Y4Xnd0KpNTGsKLeGu7t7LN6e77NLIfqOeI9mL8TeIk26zZ1qkqJiz2Y-GTJu5Ww/exec";
+    "https://script.google.com/macros/s/AKfycbyVyki2YxkxYRgx9xK-canDeXPD-z87Li_Dgtpb7eJr7CyriFWVXEOUuJDxxwdVQ19giA/exec";
 
 
   const messages = document.getElementById("messages");
@@ -478,7 +479,8 @@
   const sendBtn = document.getElementById("sendBtn");
 
 
-  // Enter key
+  /* ENTER KEY */
+
   function handleKey(event) {
 
     if (event.key === "Enter" && !event.shiftKey) {
@@ -486,20 +488,25 @@
       event.preventDefault();
 
       sendMessage();
+
     }
+
   }
 
 
-  // Suggestion buttons
+  /* SUGGESTION */
+
   function useSuggestion(text) {
 
     promptBox.value = text;
 
     sendMessage();
+
   }
 
 
-  // Add message to chat
+  /* ADD MESSAGE */
+
   function addMessage(text, type) {
 
     const message = document.createElement("div");
@@ -528,6 +535,7 @@
       img.alt = "Campus AI";
 
       avatar.appendChild(img);
+
     }
 
 
@@ -549,10 +557,12 @@
 
 
     return message;
+
   }
 
 
-  // Send message
+  /* SEND MESSAGE */
+
   async function sendMessage() {
 
     const text = promptBox.value.trim();
@@ -563,7 +573,6 @@
     }
 
 
-    // Remove welcome screen
     const welcome = document.getElementById("welcome");
 
     if (welcome) {
@@ -571,19 +580,14 @@
     }
 
 
-    // Add user message
     addMessage(text, "user");
 
 
-    // Clear input
     promptBox.value = "";
 
-
-    // Disable button
     sendBtn.disabled = true;
 
 
-    // Loading message
     const loadingMessage =
       addMessage("Campus AI is thinking...", "assistant");
 
@@ -594,13 +598,6 @@
 
 
     try {
-
-      /*
-        Send request to Google Apps Script.
-
-        We use text/plain so the browser does not
-        trigger a CORS preflight request.
-      */
 
       const response = await fetch(API_URL, {
 
@@ -620,7 +617,6 @@
       const result = await response.json();
 
 
-      // Remove loading message
       loadingMessage.remove();
 
 
@@ -635,6 +631,7 @@
           (result.error || "Something went wrong."),
           "assistant"
         );
+
       }
 
 
@@ -642,24 +639,28 @@
 
       loadingMessage.remove();
 
+
       addMessage(
         "Unable to connect to Campus AI 😕\n\n" +
-        "Please check the Apps Script deployment and try again.",
+        "Please check the Apps Script deployment.",
         "assistant"
       );
 
+
       console.error(error);
+
     }
 
 
-    // Enable button
     sendBtn.disabled = false;
 
     promptBox.focus();
+
   }
 
 
-  // New chat
+  /* NEW CHAT */
+
   function newChat() {
 
     messages.innerHTML = `
@@ -668,8 +669,7 @@
 
         <img
           src="assets/alpha-logo.jpeg"
-          alt="Alpha College"
-        >
+          alt="Alpha College">
 
         <h2>How can I help you today?</h2>
 
@@ -708,11 +708,13 @@
         </div>
 
       </div>
+
     `;
 
     promptBox.value = "";
 
     promptBox.focus();
+
   }
 
 </script>
